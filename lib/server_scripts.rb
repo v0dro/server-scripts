@@ -1,8 +1,8 @@
-require 'lib/computer'
-require 'lib/tsubame'
-require 'lib/abci'
-require 'lib/lab_server'
-require 'lib/reedbush'
+require 'server_scripts/computer.rb'
+require 'server_scripts/tsubame'
+require 'server_scripts/abci'
+require 'server_scripts/lab_server'
+require 'server_scripts/reedbush'
 
 module ServerScripts
   class << self
@@ -19,9 +19,7 @@ module ServerScripts
 
   class TaskSubmit
     def initialize
-      system = S
     end
-    
   end
 end
 

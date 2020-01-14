@@ -1,5 +1,5 @@
 module ServerScripts
-  class TSUBAME < Computer
+  class LabServer < Computer
     
   end
 end
