@@ -1,8 +1,3 @@
-module ServerScripts
-  class Computer
-    HEADER = ""
-    SUBMIT_CMD = ""
-    MODULE_LOAD= ""
-  end  
-end
+require 'computer/base'
+require 'computer/tsubame'
 

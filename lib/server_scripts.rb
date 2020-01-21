@@ -22,13 +22,17 @@ module ServerScripts
   end
 
   module MPIType
-    class OpenMPI
+    class MPIProgram
+      
+    end
+    
+    class OpenMPI < MPIProgram
       def mpirun
         "mpirun"
       end
     end
 
-    class IntelMPI
+    class IntelMPI < MPIProgram
       def mpirun
         "mpiexec.hydra"
       end
@@ -42,7 +46,9 @@ module ServerScripts
 
   class BatchJob
     attr_accessor :job_name, :out_file, :err_file, :wall_time, :node_type
-    attr_accessor :nodes, :npernode, :nprocs, :run_cmd, :mpi
+    attr_accessor :nodes, :npernode, :nprocs, :run_cmd, :mpi, :executable
+
+    attr_reader :env
       
     def initialize
       sys = ServerScripts.system
@@ -57,6 +63,13 @@ module ServerScripts
       @nprocs = nil
       @run_cmd = nil
       @mpi = MPIType::OpenMPI.new
+      @env = {}
+      @executable = "a.out"
+    end
+
+    def set_env var, value
+      raise ArgumentError, "Env #{var} is already set to #{value}." if @env[var]
+      @env[var] = value
     end
 
     def submit!
