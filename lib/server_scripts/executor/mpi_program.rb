@@ -15,7 +15,7 @@ module ServerScripts
     
     class OpenMPI < MPIProgram
       def run_cmd
-        "mpirun --mca mpi_cuda_support 0 #{env_variables} -N #{@npernode} -np #{@nprocs}"
+        "mpirun --mca mpi_cuda_support 0 -x LD_LIBRARY_PATH #{env_variables} -N #{@npernode} -np #{@nprocs}"
       end
 
       private

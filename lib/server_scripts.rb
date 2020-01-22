@@ -39,6 +39,8 @@ module ServerScripts
     attr_accessor :additional_commands
     attr_accessor :enable_intel_itac
     attr_accessor :intel_vtune_fname
+    attr_accessor :source_bashrc
+    attr_accessor :modules
 
     attr_reader :env
     attr_reader :job_fname
@@ -61,6 +63,8 @@ module ServerScripts
       @job_script = nil
       @enable_intel_itac = false
       @additional_commands = []
+      @modules = []
+      @source_bashrc = true
 
       yield self
     end
@@ -84,11 +88,14 @@ module ServerScripts
 
     def generate_job_script!
       @system = ServerScripts.system.new(@node_type, @nodes, @job_name,
-        @wall_time, @out_file, @err_file, @env)
+        @wall_time, @out_file, @err_file, @env, @modules)
       configure_executor!
 
       @job_script = ""
       @job_script += @system.header
+      @job_script += "\nsource ~/.bashrc\n" if @source_bashrc
+      @job_script += @system.module_load_cmd
+
       @job_script += @system.env_setter
       @additional_commands.each do |c|
         @job_script += c + "\n"

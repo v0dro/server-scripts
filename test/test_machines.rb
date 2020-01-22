@@ -16,9 +16,10 @@ class TestMachines < Minitest::Test
       t.executable = "./a.out"
       t.options = "3 32768 2048 2 2"
       t.additional_commands = ["make clean", "make -j 10 h_lu"]
+      t.modules = ["openmpi"]
     end
 
     task.write_job_script!
-    task.submit!
+#    task.submit!
   end
 end

@@ -9,9 +9,18 @@ module ServerScripts
 #$ -N %{job_name}
 #$ -o %{out_file}
 #$ -e %{err_file}
+
+. /etc/profile.d/modules.sh
       }
 
       FULL_NODE = "f_node"
+
+      MODULES = {
+        "gcc" => "gcc/8.3.0",
+        "intel-mpi" => "intel-mpi",
+        "openmpi" => "cuda/8.0.61 openmpi",
+        "itac" => "intel-itac intel-vtune"
+      }
       
       def header
         HEADER % {node_type: node_type, nodes: @nodes, wall_time: @wall_time,
@@ -30,6 +39,10 @@ module ServerScripts
       def job_submit_cmd batch_script:, res_id: nil
         res = res_id ? " -ar #{res_id} " : ""
         "qsub -g #{ServerScripts.group_name} #{res} #{batch_script}"
+      end
+
+      def module_load_cmd
+        "module load #{@modules.map { |m| MODULES[m] }.join(' ')}"
       end
     end    
   end
