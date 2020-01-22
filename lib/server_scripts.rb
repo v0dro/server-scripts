@@ -7,7 +7,7 @@ require 'server_scripts/version'
 module ServerScripts
   class << self
     def system
-      sys = ENV["SYSTEM"]
+      sys = ENV["SYSTEM_NAME"]
 
       if sys == "SAMEER-PC"
         ServerScripts::Computer::SameerPC
