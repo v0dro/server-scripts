@@ -10,11 +10,12 @@ class TestMachines < Minitest::Test
       t.out_file = "ULTRA_out.log"
       t.err_file = "ULTRA_err.log"
       t.node_type = NodeType::FULL
-      t.mpi = :openmpi
+      t.executor = :openmpi
       t.set_env "STARPU_SCHED", "dmda"
       t.set_env "MKL_NUM_THREADS", "1"
-      t.executable = "a.out"
-      t.exec_options = "3 32768 2048 2 2"
+      t.executable = "./a.out"
+      t.options = "3 32768 2048 2 2"
+      t.additional_commands = ["make clean", "make -j 10 h_lu"]
     end
 
     task.generate_job_script!
