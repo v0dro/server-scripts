@@ -11,8 +11,8 @@ module ServerScripts
 #$ -l %{node_type}=%{nodes}
 #$ -l h_rt=%{walltime}
 #$ -N %{job_name}
-#$ -o %{out_file}.log
-#$ -e %{err_file}.log
+#$ -o %{out_file}
+#$ -e %{err_file}
         }
       end
     end    

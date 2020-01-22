@@ -45,10 +45,10 @@ module ServerScripts
     attr_reader :system
       
     def initialize job_fname
-      @job_fname = "sample_job_script.sh"
+      @job_fname = job_fname
       @job_name = "sample"
-      @out_file = "sample_out"
-      @err_file = "sample_err"
+      @out_file = "sample_out.log"
+      @err_file = "sample_err.log"
       @wall_time = "1:00:00"
       @node_type = NodeType::FULL
       @nodes = 1
@@ -58,7 +58,7 @@ module ServerScripts
       @executor = :vanilla
       @env = {}
       @executable = "./a.out"
-      @job_script = ""
+      @job_script = nil
       @enable_intel_itac = false
       @additional_commands = []
 
@@ -70,26 +70,31 @@ module ServerScripts
       @env[var] = value
     end
 
+    def write_job_script!
+      generate_job_script! unless @job_script
+      File.write(@job_fname, @job_script)      
+    end
+    
+    def submit!
+      write_job_script!
+      exec @system.job_submit_cmd(batch_script: @job_fname)
+    end
+
+    private
+
     def generate_job_script!
       @system = ServerScripts.system.new(@node_type, @nodes, @job_name,
         @wall_time, @out_file, @err_file, @env)
       configure_executor!
 
+      @job_script = ""
       @job_script += @system.header
       @job_script += @system.env_setter
       @additional_commands.each do |c|
         @job_script += c + "\n"
       end
-      @job_script += "#{@executor.run_cmd} #{@executable} #{@options}"
+      @job_script += "#{@executor.run_cmd} #{@executable} #{@options}\n"
     end
-
-    def submit!
-      generate_job_script! unless @job_script
-      File.write(@job_fname, @job_script)
-#      system(@system.job_submit_cmd(batch_script: @job_fname))
-    end
-
-    private
 
     def configure_executor!
       check_process_counts

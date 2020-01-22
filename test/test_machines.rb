@@ -18,7 +18,7 @@ class TestMachines < Minitest::Test
       t.additional_commands = ["make clean", "make -j 10 h_lu"]
     end
 
-    task.generate_job_script!
+    task.write_job_script!
     task.submit!
   end
 end

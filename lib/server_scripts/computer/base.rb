@@ -21,10 +21,6 @@ module ServerScripts
       def env_setter
         raise NotImplementedError
       end
-
-      def job_submit_cmd
-        raise NotImplementedError
-      end
     end    
   end
 end

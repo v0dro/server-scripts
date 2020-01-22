@@ -10,8 +10,7 @@ def self.get_files
   end
 
   files.concat(
-    ["CONTRIBUTING.md", "Gemfile", "server_scripts.gemspec",
-     "README.md", "Rakefile"])
+    ["Gemfile", "server_scripts.gemspec", "README.md", "Rakefile"])
   
   files
 end
@@ -22,7 +21,7 @@ Easily write scripts for submitted jobs to various machines.
 MSG
 
 Gem::Specification.new do |spec|
-  spec.name          = 'xnd'
+  spec.name          = 'server_scripts'
   spec.version       = ServerScripts::VERSION
   spec.authors       = ['Sameer Deshmukh']
   spec.email         = ['sameer.deshmukh93@gmail.com']

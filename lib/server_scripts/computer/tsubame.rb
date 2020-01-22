@@ -7,8 +7,8 @@ module ServerScripts
 #$ -l %{node_type}=%{nodes}
 #$ -l h_rt=%{wall_time}
 #$ -N %{job_name}
-#$ -o %{out_file}.log
-#$ -e %{err_file}.log
+#$ -o %{out_file}
+#$ -e %{err_file}
       }
 
       FULL_NODE = "f_node"
@@ -27,9 +27,9 @@ module ServerScripts
         str
       end
 
-      def job_submit_cmd res_id: nil, batch_script:
+      def job_submit_cmd batch_script:, res_id: nil
         res = res_id ? " -ar #{res_id} " : ""
-        "qsub -g #{ServeScripts.group_name} #{res} #{batch_script}"
+        "qsub -g #{ServerScripts.group_name} #{res} #{batch_script}"
       end
     end    
   end
