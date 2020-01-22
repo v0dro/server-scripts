@@ -1,6 +1,7 @@
 module ServerScripts
-  class TSUBAME < Base
-    HEADER = %q{
+  module Computer
+    class TSUBAME < Base
+      HEADER = %q{
 #!/bin/bash
 #$ -cwd
 #$ -l %{node_type}=%{nodes}
@@ -8,8 +9,9 @@ module ServerScripts
 #$ -N %{job_name}
 #$ -o %{out_file}.log
 #$ -e %{err_file}.log
-    }
+      }
 
-    FULL_NODE = "f_node"
+      FULL_NODE = "f_node"
+    end    
   end
 end

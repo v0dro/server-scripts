@@ -1,8 +1,12 @@
 module ServerScripts
   module Computer
-    class Base
+    class SameerPC < Base
+      def initialize
+        
+      end
+
       def full_node
-        raise NotImplementedError
+        ""
       end
     end    
   end

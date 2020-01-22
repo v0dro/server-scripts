@@ -1,7 +1,7 @@
-require 'server_scripts'
+require_relative 'server_scripts'
 include ServerScripts
 
-task = BatchJob.new do |t|
+task = BatchJob.new("job_script.sh") do |t|
   t.nodes = 4
   t.npernode = 1
   t.job_name = "ULTRASCALE"

@@ -1,8 +1,5 @@
 require 'server_scripts/computer.rb'
-require 'server_scripts/tsubame'
-require 'server_scripts/abci'
-require 'server_scripts/lab_server'
-require 'server_scripts/reedbush'
+require 'server_scripts/version'
 
 module ServerScripts
   class << self
@@ -10,13 +7,13 @@ module ServerScripts
       sys = ENV["SYSTEM"]
 
       if sys == "SAMEER-PC"
-        ServerScripts::SameerPC
+        ServerScripts::Computer::SameerPC.new
       elsif sys == "TSUBAME"
-        ServerScripts::TSUBAME
+        ServerScripts::Computer::TSUBAME.new
       elsif sys == "ABCI"
-        ServerScripts::ABCI
+        ServerScripts::Computer::ABCI.new
       elsif sys == "REEDBUSH"
-        ServerScripts::REEDBUSH
+        ServerScripts::Computer::REEDBUSH.new
       end
     end
   end
@@ -45,19 +42,26 @@ module ServerScripts
   end
 
   class BatchJob
-    attr_accessor :job_name, :out_file, :err_file, :wall_time, :node_type
+    attr_accessor :job_name
+    attr_accessor :out_file
+    attr_accessor :err_file
+    attr_accessor :wall_time
+    attr_accessor :node_type
+    attr_accessor :options
     attr_accessor :nodes, :npernode, :nprocs, :run_cmd, :mpi, :executable
 
     attr_reader :env
+    attr_reader :job_fname
+    attr_reader :system
       
-    def initialize
-      sys = ServerScripts.system
-      
+    def initialize job_fname
+      @system = ServerScripts.system
+      @job_fname = "sample_job_script.sh"
       @job_name = "sample"
       @out_file = "sample_out"
       @err_file = "sample_err"
       @walltime = "1:00:00"
-      @node_type = sys::FULL_NODE
+      @node_type = @system.full_node
       @nodes = 1
       @npernode = nil
       @nprocs = nil
@@ -70,6 +74,10 @@ module ServerScripts
     def set_env var, value
       raise ArgumentError, "Env #{var} is already set to #{value}." if @env[var]
       @env[var] = value
+    end
+
+    def generate_job_script!
+      
     end
 
     def submit!
