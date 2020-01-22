@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+require 'ptools'
+
 require 'server_scripts/node_type'
 require 'server_scripts/executor'
 require 'server_scripts/computer'
