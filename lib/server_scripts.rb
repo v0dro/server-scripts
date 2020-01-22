@@ -81,7 +81,7 @@ module ServerScripts
     
     def submit!
       write_job_script!
-      exec @system.job_submit_cmd(batch_script: @job_fname)
+      Kernel.system(@system.job_submit_cmd(batch_script: @job_fname))
     end
 
     private
