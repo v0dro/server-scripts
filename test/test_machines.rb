@@ -10,7 +10,7 @@ class TestMachines < Minitest::Test
       t.out_file = "ULTRA_out.log"
       t.err_file = "ULTRA_err.log"
       t.node_type = NodeType::FULL
-      t.mpi = MPIType::OpenMPI.new
+      t.mpi = :openmpi
       t.set_env "STARPU_SCHED", "dmda"
       t.set_env "MKL_NUM_THREADS", "1"
       t.executable = "a.out"
