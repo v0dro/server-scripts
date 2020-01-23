@@ -27,5 +27,7 @@ class TestMachines < Minitest::Test
     puts parser.total_exec_time
     puts parser.total_sleep_time
     puts parser.total_overhead_time
+    puts parser.time(event: :total_time, proc_id: 0, worker_id: 4)
+    puts parser.proc_time event: :exec_time, proc_id: 2
   end
 end

@@ -28,7 +28,19 @@ module ServerScripts
       def total_overhead_time
         extract_from_time_hash :overhead_time
       end
-       
+
+      def proc_time event:, proc_id:
+        time = 0.0
+        @time_hash[proc_id].each_value do |thread_info|
+          time += thread_info[event]
+        end
+
+        time
+      end
+
+      def time event:, proc_id:, worker_id:
+        @time_hash[proc_id][worker_id][event]
+      end
 
       private
 
@@ -48,17 +60,12 @@ module ServerScripts
         Dir.glob(@regex) do |fname|
           proc_id = fname.match(@regex.gsub("*", "(\\d+)"))[1].to_i
           @time_hash[proc_id] = {}
-          
           output = File.read(fname).split("\n")
-
           recent_cpu = nil
+          
           output.each do |line|
             cpu_match = line.match(/CPU\s(\d+)/)
-
-            if cpu_match
-              recent_cpu = cpu_match[1].to_i
-            end
-            
+            recent_cpu = cpu_match[1].to_i if cpu_match
             match_data = line.match(/total\:\s+(\d+)\.\d+\sms\sexecuting\:\s(\d+).\d+\sms\ssleeping\:\s(\d+).\d+\sms\soverhead\s(\d+).\d+\sms/)
 
             if match_data
@@ -74,8 +81,6 @@ module ServerScripts
             end
           end
         end
-
-        puts @time_hash
       end
     end # class
   end # module Parser
