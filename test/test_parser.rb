@@ -3,7 +3,8 @@ include ServerScripts
 
 class TestMachines < Minitest::Test
   def test_itac
-    
+    parser = Parser::ITAC.new("test/artifacts/PROF4_ITAC.STF")
+    parser.generate_ideal_trace!
   end
 
   def test_starpu_profile
