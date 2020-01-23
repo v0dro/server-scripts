@@ -30,33 +30,38 @@ module ServerScripts
       def analyze_function_profiles!
         unless @real_function_profile
           @real_function_profile = `traceanalyzer --cli --functionprofile #{@real_itac_fname}`
-          @real_function_profile = @real_function_profile.split('\n')
+          @real_function_profile = @real_function_profile.split("\n")
         end
         unless @ideal_function_profile
           @ideal_function_profile = `traceanalyzer --cli --functionprofile #{@ideal_itac_fname}`
-          @ideal_function_profile = @ideal_function_profile.split('\n')          
+          @ideal_function_profile = @ideal_function_profile.split("\n")          
         end
       end
 
+      # Total time of real execution including intialization etc.
       def real_app_time
         @total_app_time ||= event_time("Application", kind: :real, how: :all_procs)
         @total_app_time
       end
 
+      # Ideal MPI time. Only wait time.
       def ideal_mpi_time
         @ideal_mpi_time ||= event_time("MPI", kind: :ideal)
         @ideal_mpi_time
       end
 
+      # Actual MPI time. Includes wait time and communication time.
       def real_mpi_time
         @real_mpi_time ||= event_time("MPI")
         @real_mpi_time
       end
 
+      # Time that MPI spent in communication.
       def mpi_comm_time
         real_mpi_time - ideal_mpi_time
       end
 
+      # Get event time for a particular event. Specify whether from ideal trace or real trace.
       def event_time(event, kind: :real, how: :all_procs)
         if kind == :real
           parse_real_event_time(event, how: how)
@@ -88,7 +93,18 @@ module ServerScripts
       end
 
       def get_perproc_event_time(func_profile, event)
-        
+        regex_event = Regexp.quote(event)
+        per_proc_event_time = {}
+
+        func_profile.each do |l|
+          if l.match(/"Process\s(\d+)";"#{regex_event}"/)
+            match_data = l.match(/"Process\s(\d+)";"#{regex_event}";(\d+);(\d+);(\d+);(\d+)/)
+            per_proc_event_time[match_data[1].to_i] = match_data[3].to_f / 1e9
+          end
+        end
+
+        values = per_proc_event_time.values
+        [values.inject(:+).to_f / values.size, values.min, values.max]
       end
 
       def parse_real_event_time(event, how:)
