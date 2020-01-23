@@ -1,0 +1,27 @@
+
+Worker statistics:
+******************
+CPU 0                           
+	2776 task(s)
+	total: 165886.52 ms executing: 160004.93 ms sleeping: 3616.60 ms overhead 2264.99 ms
+CPU 1                           
+	2815 task(s)
+	total: 165886.54 ms executing: 159679.84 ms sleeping: 3875.50 ms overhead 2331.21 ms
+CPU 2                           
+	2810 task(s)
+	total: 165886.55 ms executing: 159463.73 ms sleeping: 4166.56 ms overhead 2256.26 ms
+CPU 3                           
+	2803 task(s)
+	total: 165886.55 ms executing: 159034.01 ms sleeping: 4548.37 ms overhead 2304.17 ms
+CPU 4                           
+	2805 task(s)
+	total: 165886.55 ms executing: 158603.03 ms sleeping: 4958.55 ms overhead 2324.97 ms
+CPU 5                           
+	2799 task(s)
+	total: 165886.56 ms executing: 157914.31 ms sleeping: 5667.63 ms overhead 2304.61 ms
+CPU 6                           
+	2775 task(s)
+	total: 165886.56 ms executing: 157225.78 ms sleeping: 6319.45 ms overhead 2341.32 ms
+CPU 7                           
+	2769 task(s)
+	total: 165886.56 ms executing: 156727.34 ms sleeping: 6861.34 ms overhead 2297.88 ms

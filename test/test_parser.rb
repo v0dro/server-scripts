@@ -19,4 +19,13 @@ class TestMachines < Minitest::Test
     puts parser.total_sleep_time
     puts parser.total_overhead_time
   end
+
+  def test_starpu_profile_load_balance
+    parser = Parser::StarpuProfile.new("test/artifacts/4_proc_profile_8_*.starpu_profile")
+    
+    puts parser.total_time
+    puts parser.total_exec_time
+    puts parser.total_sleep_time
+    puts parser.total_overhead_time
+  end
 end
