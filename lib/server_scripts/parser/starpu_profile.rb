@@ -1,6 +1,8 @@
 module ServerScripts
   module Parser
     class StarpuProfile
+
+      attr_reader :time_hash
       # Specify the regex that will allow finding the profile files for the given starpu
       # processes. Each process will output one file.
       #
