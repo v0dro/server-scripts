@@ -4,7 +4,11 @@ include ServerScripts
 class TestMachines < Minitest::Test
   def test_itac
     parser = Parser::ITAC.new("test/artifacts/PROF4_ITAC.STF")
-    parser.generate_ideal_trace!
+    parser.trace!
+
+    puts "MPI REAL ALL PROCS: #{parser.real_mpi_time}"
+    puts "GETRF START REAL ALL PROCS: #{parser.event_time("getrf_start")}"
+    puts "MPI IDEAL ALL PROCS: #{parser.ideal_mpi_time}"
   end
 
   def test_starpu_profile
