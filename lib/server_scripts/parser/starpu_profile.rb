@@ -13,6 +13,7 @@ module ServerScripts
         @regex = regex
         @time_hash = {}
         extract_data_from_profiles
+        raise ArgumentError, "could not find any starpu profiles." if @time_hash.empty?
       end
 
       def total_time
@@ -60,6 +61,7 @@ module ServerScripts
 
       def extract_data_from_profiles
         Dir.glob(@regex) do |fname|
+          puts "reading file #{fname}..."
           proc_id = fname.match(@regex.gsub("*", "(\\d+)"))[1].to_i
           @time_hash[proc_id] = {}
           output = File.read(fname).split("\n")
