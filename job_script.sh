@@ -1,16 +1,19 @@
+
 #!/bin/bash
 
 #$ -cwd
-#$ -l f_node=4
+#$ -l rt_F=4
 #$ -l h_rt=1:00:00
 #$ -N ULTRASCALE
 #$ -o ULTRA_out.log
 #$ -e ULTRA_err.log
 
 . /etc/profile.d/modules.sh
+module load intel-mkl
+
       
 source ~/.bashrc
-module load cuda/8.0.61 openmpi
+module load openmpi
 export STARPU_SCHED=dmda
 export MKL_NUM_THREADS=1
 make clean
