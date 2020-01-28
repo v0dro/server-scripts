@@ -12,6 +12,8 @@ class TestMachines < Minitest::Test
   end
 
   def test_starpu_profile
+    ServerScripts.verbose = true
+    
     parser = Parser::StarpuProfile.new("test/artifacts/profile_file_DENSE_*.starpu_profile")
 
     puts parser.total_time

@@ -11,6 +11,7 @@ require 'server_scripts/version'
 
 module ServerScripts
   class << self
+    @@verbose = false
     def system
       sys = ENV["SYSTEM_NAME"]
 
@@ -27,6 +28,14 @@ module ServerScripts
 
     def group_name
       ENV["GROUP_NAME"]
+    end
+
+    def verbose
+      @@verbose
+    end
+
+    def verbose= v
+      @@verbose = v
     end
   end
 end # module ServerScripts

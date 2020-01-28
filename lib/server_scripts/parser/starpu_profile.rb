@@ -59,11 +59,23 @@ module ServerScripts
       end
 
       def extract_data_from_profiles
+        if ServerScripts.verbose
+          puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+          puts "Parsing REGEX: #{@regex}"
+        end
+        
         Dir.glob(@regex) do |fname|
+          if ServerScripts.verbose
+            puts "--------------------------------------"
+            puts "Reading file #{fname}..."
+          end
+          
           proc_id = fname.match(@regex.gsub("*", "(\\d+)"))[1].to_i
           @time_hash[proc_id] = {}
           output = File.read(fname).split("\n")
           recent_cpu = nil
+
+          puts("\tPROC ID: #{proc_id}") if ServerScripts.verbose
           
           output.each do |line|
             cpu_match = line.match(/CPU\s(\d+)/)
@@ -78,11 +90,20 @@ module ServerScripts
                 @time_hash[proc_id][recent_cpu][:exec_time] = match_data[2].to_f / 1e3
                 @time_hash[proc_id][recent_cpu][:sleep_time] = match_data[3].to_f / 1e3
                 @time_hash[proc_id][recent_cpu][:overhead_time] = match_data[4].to_f / 1e3
+                if ServerScripts.verbose
+                  puts("\t\tCPU ID: #{recent_cpu}")
+                  puts("\t\t\tTotal Time: #{@time_hash[proc_id][recent_cpu][:total_time]}")
+                  puts("\t\t\tExec Time: #{@time_hash[proc_id][recent_cpu][:exec_time]}")
+                  puts("\t\t\tSleep Time: #{@time_hash[proc_id][recent_cpu][:sleep_time]}")
+                  puts("\t\t\tOverhead Time: #{@time_hash[proc_id][recent_cpu][:overhead_time]}")
+                end
               end
               recent_cpu = nil
             end
           end
+          puts("--------------------------------------") if ServerScripts.verbose
         end
+        puts("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<") if ServerScripts.verbose
       end
     end # class
   end # module Parser
