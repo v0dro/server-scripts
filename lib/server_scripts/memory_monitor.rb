@@ -35,7 +35,7 @@ module ServerScripts
           @vmsize << (size[1].to_i / 1e3) if size
         end
 
-        sleep 1
+        sleep @interval_sec
       end
     end
 
