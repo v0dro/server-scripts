@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+
+require 'server_scripts'
+
+if ARGV[0] == "--help"
+  puts "Usage:"
+  puts "\tmem_monitor [--pname=pname|--pid=pid] --duration=HH:MM:SS --interval(HH:MM:SS)"
+  exit
+end
+
+pname = nil
+pid = nil
+duration = nil
+interval = nil
+ofile = nil
+ARGV.each do |arg|
+  pname = arg.match(/--pname=(\w+)/)[1] if arg.match(/--pname/)
+  pid = arg.match(/--pid=(\w+)/)[1].to_i if arg.match(/--pid/)
+  duration = arg.match(/--duration=(\w+:\w+:\w+)/)[1] if arg.match(/--duration/)
+  interval = arg.match(/--interval=(\w+:\w+:\w+)/)[1] if arg.match(/--interval/)
+  ofile = arg.match(/--output=(.*)/)[1] if arg.match(/--output/)
+end
+
+if !pname && pid
+  pname = `ps -p #{pid} -o comm=`.strip
+end
+
+if !pid && pname
+  pid = `pidof #{pname}`.strip
+  raise ArgumentError, "Process #{pname} does not exist."
+end
+
+duration = "00:00:30" if !duration
+interval = "00:00:01" if !interval
+
+puts "Using params:"
+puts "\tPID: #{pid}"
+puts "\tPNAME: #{pname}"
+puts "\tDURATION: #{duration}"
+puts "\tINTERVAL: #{interval}"
+puts "\tOFILE: #{ofile}" if ofile
+
+monitor = ServerScripts::MemoryMonitor.new(pid: pid, duration: duration,
+                                           interval: interval)
+monitor.start!
+
+if ofile
+  file = File.open ofile, "w+"
+  file << "VmRSS (MB): #{monitor.vmrss}\n"
+  file << "VmSize (MB): #{monitor.vmsize}\n"
+  file.close
+else
+  puts "VmRSS (MB): #{monitor.vmrss}"
+  puts "VmSize (MB): #{monitor.vmsize}"  
+end
+
