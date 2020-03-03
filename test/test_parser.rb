@@ -23,6 +23,8 @@ class TestMachines < Minitest::Test
   end
 
   def test_starpu_profile_load_balance
+    ServerScripts.verbose = true
+    
     parser = Parser::StarpuProfile.new("test/artifacts/4_proc_profile_8_*.starpu_profile")
     
     puts parser.total_time
@@ -31,5 +33,16 @@ class TestMachines < Minitest::Test
     puts parser.total_overhead_time
     puts parser.time(event: :total_time, proc_id: 0, worker_id: 4)
     puts parser.proc_time event: :exec_time, proc_id: 2
+  end
+
+  def test_vtune_threading
+    ServerScripts.verbose = true
+
+    parser = Parser::VTune::Hotspots::Threads.new "test/artifacts/vtune_thread_data.csv"
+
+    puts parser.total_cpu_time
+    puts parser.total_cpu_effective_time
+    puts parser.total_cpu_overhead_time
+    puts parser.total_wait_time
   end
 end

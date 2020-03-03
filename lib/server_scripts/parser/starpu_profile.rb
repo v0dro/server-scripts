@@ -2,7 +2,9 @@ module ServerScripts
   module Parser
     class StarpuProfile
 
+      # The Hash containing the time records of various workers and processes.
       attr_reader :time_hash
+      
       # Specify the regex that will allow finding the profile files for the given starpu
       # processes. Each process will output one file.
       #
@@ -16,22 +18,27 @@ module ServerScripts
         raise ArgumentError, "could not find any starpu profiles." if @time_hash.empty?
       end
 
+      # Get the sum of total time in seconds summed over all processes and workers.
       def total_time
         extract_from_time_hash :total_time
       end
 
+      # Get the sum of exec total time in seconds summed over all processes and workers.
       def total_exec_time
         extract_from_time_hash :exec_time
       end
-
+      
+      # Get the sum of sleep total time in seconds summed over all processes and workers.
       def total_sleep_time
         extract_from_time_hash :sleep_time        
       end
 
+      # Get the sum of overhead total time in seconds summed over all processes and workers.
       def total_overhead_time
         extract_from_time_hash :overhead_time
       end
 
+      # Get the total time for an event summed over all the workers in a given process.
       def proc_time event:, proc_id:
         time = 0.0
         @time_hash[proc_id].each_value do |thread_info|
@@ -41,6 +48,11 @@ module ServerScripts
         time
       end
 
+      # Get the time in seconds for the given event, worker and process.
+      # 
+      # :event can be one of :total_time, :exec_time, :sleep_time or :overhead_time.
+      # :proc_id should be a number specifying process number.
+      # :worker_id should be a number specifying the worker ID.
       def time event:, proc_id:, worker_id:
         @time_hash[proc_id][worker_id][event]
       end

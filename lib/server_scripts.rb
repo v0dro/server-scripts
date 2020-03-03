@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'ptools'
+require 'csv'
 
 require 'server_scripts/version'
 
