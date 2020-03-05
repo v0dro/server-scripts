@@ -46,4 +46,17 @@ class TestMachines < Minitest::Test
     puts parser.total_wait_time
     puts parser.total_time
   end
+
+  def test_vtune_slate
+    ServerScripts.verbose = true
+    parser = Parser::VTune::Hotspots::SLATE.new(
+      "test/artifacts/slate-two-proc-p1.csv", nthreads: 16)
+
+    puts parser.total_cpu_time
+    puts parser.total_cpu_effective_time
+    puts parser.total_cpu_overhead_time
+    puts parser.total_wait_time
+    puts parser.total_mpi_busy_time
+    puts parser.total_time
+  end
 end

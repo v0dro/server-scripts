@@ -46,14 +46,6 @@ module ServerScripts
 
           private
 
-          def parse_for_event event
-            total = 0.0
-            @threads.each_value do |thread|
-              total += thread[event]
-            end
-            total
-          end
-
           def parse_csv! fname
             data = CSV.parse(File.read(fname), headers: true)
             data.each_with_index do |row, i|
