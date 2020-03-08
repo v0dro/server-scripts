@@ -64,6 +64,20 @@ job submission command.
 If you want to generate traces using intel MPI, you can use additional options
 like setting the ITAC and VTUNE output file/folder names.
 
+## Parse intel VTune output
+
+``` ruby
+parser = Parser::VTune::Hotspots::SLATE.new(
+  "test/artifacts/slate-two-proc-p1.csv", nthreads: 16)
+
+puts parser.total_cpu_time
+puts parser.total_cpu_effective_time
+puts parser.total_cpu_overhead_time
+puts parser.total_wait_time
+puts parser.total_mpi_busy_time
+puts parser.total_time
+```
+
 ## Parse intel ITAC output
 
 The intel ITAC tool can be helpful for generating traces of parallel MPI programs.
