@@ -66,6 +66,47 @@ like setting the ITAC and VTUNE output file/folder names.
 
 ## Parse intel VTune output
 
+### Output chart of intel VTune
+
+The way VTune classfies the output in the CSV is a little funny and should be
+understood properly unless you want to have a hard time. The output can be said
+to be classified as a tree that looks like so:
+```
+CPU Time
+  - Effective Time
+    - Idle
+    - Poor
+    - Ok
+    - Ideal
+  - Spin Time
+    - Imbalance or Serial Spinning
+    - Lock Contention
+    - MPI Busy Wait Time
+    - Other
+  - Overhead Time
+    - Scheduling
+    - Reduction
+    - Atomics
+    - Other
+Wait Time
+  - Idle
+  - Poor
+  - Ok
+  - Ideal
+  - Over
+Wait Count
+PID
+TID
+```
+The total time the sum of `CPU Time` and `Wait Time`.
+
+### Usage
+A sample program for parsing the firt 16 threads reported by the vtune command:
+```
+vtune -report hotspots -group-by thread -result-dir result_file.vtune \
+    -report-output result_thread_res.csv -csv-delimiter=,
+```
+
 ``` ruby
 parser = Parser::VTune::Hotspots::SLATE.new(
   "test/artifacts/slate-two-proc-p1.csv", nthreads: 16)

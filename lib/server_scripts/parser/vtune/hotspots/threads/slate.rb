@@ -8,8 +8,11 @@ module ServerScripts
             super(fname)
           end
 
-          def total_mpi_busy_time
-            @total_mpi_busy_time ||= parse_for_event(:mpi_busy_time)
+          # Get the total time for all threads under the header
+          # "CPU Time:Spin Time:MPI Busy Wait Time". This time
+          # is included within "CPU Time:Spin Time".
+          def total_mpi_busy_wait_time
+            @total_mpi_busy_time ||= parse_for_event(:mpi_busy_wait_time)
             @total_mpi_busy_time
           end
 
@@ -22,10 +25,10 @@ module ServerScripts
               @threads[i] = {}
               @threads[i][:cpu_time] = data[CPU_TIME][i].to_f
               @threads[i][:cpu_effective_time] = data[CPU_EFFECTIVE_TIME][i].to_f
-              @threads[i][:cpu_overhead_time] = data[CPU_OVERHEAD_TIME][i].to_f +
-                data[CPU_SPIN_TIME][i].to_f
+              @threads[i][:cpu_overhead_time] = data[CPU_OVERHEAD_TIME][i].to_f
+              @threads[i][:cpu_spin_time] = data[CPU_SPIN_TIME][i].to_f
               @threads[i][:wait_time] = data[WAIT_TIME][i].to_f
-              @threads[i][:mpi_busy_time] = data[MPI_BUSY_TIME][i].to_f
+              @threads[i][:mpi_busy_wait_time] = data[MPI_BUSY_WAIT_TIME][i].to_f
             end
           end
         end # class SLATE

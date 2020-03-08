@@ -7,7 +7,7 @@ module ServerScripts
           CPU_EFFECTIVE_TIME = "CPU Time:Effective Time"
           CPU_OVERHEAD_TIME = "CPU Time:Overhead Time"
           CPU_SPIN_TIME = "CPU Time:Spin Time"
-          MPI_BUSY_TIME = "CPU Time:Spin Time:MPI Busy Wait Time"
+          MPI_BUSY_WAIT_TIME = "CPU Time:Spin Time:MPI Busy Wait Time"
           WAIT_TIME = "Wait Time"
 
           def initialize fname

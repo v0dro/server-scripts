@@ -55,8 +55,9 @@ class TestMachines < Minitest::Test
     puts parser.total_cpu_time
     puts parser.total_cpu_effective_time
     puts parser.total_cpu_overhead_time
+    puts parser.total_cpu_spin_time
     puts parser.total_wait_time
-    puts parser.total_mpi_busy_time
+    puts parser.total_mpi_busy_wait_time
     puts parser.total_time
   end
 end

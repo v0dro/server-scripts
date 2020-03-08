@@ -32,10 +32,17 @@ module ServerScripts
             @total_cpu_effective_time
           end
           
-          # Total CPU overhead: sum of CPU Spin Time + CPU Overhead Time
+          # Total CPU overhead: "CPU Time:Overhead Time"
           def total_cpu_overhead_time
             @total_cpu_overhead_time ||= parse_for_event(:cpu_overhead_time)
             @total_cpu_overhead_time
+          end
+
+          # Total CPU Spin time: "CPU Time:Spin Time". This includes the MPI busy
+          # wait time, which for some reason is classified under this banner by vtune.
+          def total_cpu_spin_time
+            @total_cpu_spin_time ||= parse_for_event(:cpu_spin_time)
+            @total_cpu_spin_time
           end
           
           # Total Wait Time.
@@ -52,8 +59,8 @@ module ServerScripts
               @threads[i] = {}
               @threads[i][:cpu_time] = data[CPU_TIME][i].to_f
               @threads[i][:cpu_effective_time] = data[CPU_EFFECTIVE_TIME][i].to_f
-              @threads[i][:cpu_overhead_time] = data[CPU_OVERHEAD_TIME][i].to_f +
-                data[CPU_SPIN_TIME][i].to_f
+              @threads[i][:cpu_overhead_time] = data[CPU_OVERHEAD_TIME][i].to_f
+              @threads[i][:cpu_spin_time] = data[CPU_SPIN_TIME][i].to_f
               @threads[i][:wait_time] = data[WAIT_TIME][i].to_f
             end
           end
