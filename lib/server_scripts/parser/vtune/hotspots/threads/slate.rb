@@ -3,6 +3,8 @@ module ServerScripts
     module VTune
       module Hotspots
         class SLATE < Threads
+          # fname - CSV file containing output of vtune profiler.
+          # nthreads - Number of threads to consider.
           def initialize fname, nthreads:
             @num_threads = nthreads
             super(fname)
@@ -21,7 +23,6 @@ module ServerScripts
           def parse_csv! fname
             data = CSV.parse(File.read(fname), headers: true)
             data.each_with_index do |row, i|
-              break if i == (@num_threads-1)
               @threads[i] = {}
               @threads[i][:cpu_time] = data[CPU_TIME][i].to_f
               @threads[i][:cpu_effective_time] = data[CPU_EFFECTIVE_TIME][i].to_f
@@ -29,6 +30,7 @@ module ServerScripts
               @threads[i][:cpu_spin_time] = data[CPU_SPIN_TIME][i].to_f
               @threads[i][:wait_time] = data[WAIT_TIME][i].to_f
               @threads[i][:mpi_busy_wait_time] = data[MPI_BUSY_WAIT_TIME][i].to_f
+              break if i == (@num_threads-1)
             end
           end
         end # class SLATE
